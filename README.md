@@ -7,3 +7,5 @@ After cloning, install dependencies
 To run use
 > ```npm run dev```
 
+The app will be running on localhost:3000
+
