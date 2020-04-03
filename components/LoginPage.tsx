@@ -61,7 +61,7 @@ const LoginPage = () => {
         value={loginObj.pass}
         onChange={inputHandler}
       />
-      <Button disabled={loginReady} text="Login" />
+      <Button disabled={!loginReady} text="Login" />
     </form>
     {/* <GoogleLogin
       clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"

@@ -247,7 +247,7 @@ var LoginPage = function LoginPage() {
       columnNumber: 7
     }
   }), __jsx(_Button__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    disabled: loginReady,
+    disabled: !loginReady,
     text: "Login",
     __self: _this,
     __source: {

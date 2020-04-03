@@ -330,7 +330,7 @@ const LoginPage = () => {
       columnNumber: 7
     }
   }), __jsx(_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    disabled: loginReady,
+    disabled: !loginReady,
     text: "Login",
     __self: undefined,
     __source: {
