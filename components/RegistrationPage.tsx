@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Input from './Input'
 import Button from './Button'
 import mockData from '../mockData.json'
+import axios from 'axios'
 
 const RegistrationPage = () => {
   const registrationInit = {
@@ -10,12 +11,14 @@ const RegistrationPage = () => {
     password: '',
     confirmPassword: ''
   }
+
   const errorMsg = {
     username: '',
     email: '',
     password: '',
     confirmPassword: ''
   }
+
   const [registrationObj, setRegistrationObj] = useState(registrationInit)
   const [errorMsgObj, setErrorMsgsObj] = useState(errorMsg)
   const [submitReady, setSubmitReady] = useState(false)
@@ -55,9 +58,9 @@ const RegistrationPage = () => {
     let err = ''
     switch(true) {
       case target.id === 'username':
-        pattern = /^.{4,10}$/
+        pattern = /^\w{3,15}$/
         !pattern.test(target.value) &&
-          (err+= 'Username must be between 4-10 characters in length.')
+          (err+= 'Username must be between 3-15 characters in length.')
         !isNameAvailable(target.value) &&
           (err='Username taken.')
         break;
@@ -96,6 +99,38 @@ const RegistrationPage = () => {
     return foundUser.length === 0
   }
 
+  const createUser = (obj) => {
+    const dataTransformer = (data) => {
+      return ({
+        username: data.username,
+        email: data.email,
+        password: data.password
+      })
+    }
+    const transformedData = dataTransformer(obj)
+    axios.post('http://localhost:8000/api/auth/users/', transformedData)
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      if (error.response) {
+        console.log('__Response__');
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        console.log('Req:', error.request);
+      } else {
+        console.log('Error: ', error.message);
+      }
+      console.log(error.config);
+    });
+  }
+
+  const submitHandler = (e) => {
+    e.preventDefault()
+    createUser(registrationObj)
+  }
 
   return (
     <>
@@ -138,7 +173,11 @@ const RegistrationPage = () => {
         error={errorMsgObj.confirmPassword}
         onChange={inputHandler}
       />
-      <Button disabled={!submitReady} text="Submit" />
+      <Button
+        onClick={submitHandler}
+        disabled={!submitReady}
+        text="Submit"
+      />
     </form>
   </>
   )

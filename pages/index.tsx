@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import LoginPage from '../components/LoginPage'
 import RegistrationPage from '../components/RegistrationPage'
@@ -22,25 +22,46 @@ const App = styled.main`
   `
 
 function HomePage() {
+  const [userObj, setUserObj] = useState({})
   const [toggleLogin, setToggleLogin] = useState(false)
+  const notLoggedIn = Object.keys(userObj).length === 0
+
+  useEffect(() => {
+    if (notLoggedIn) {
+      console.log('Please login.')
+    } else {
+      console.log({userObj})
+    }
+  }, [userObj])
+
   const hideRegistration = () => {
     setToggleLogin(!toggleLogin)
   }
   return (
     <App>
       {
-        toggleLogin ?
+        notLoggedIn ? (
         <>
-          <LoginPage />
-          <p>Need to register?</p>
-          <button onClick={hideRegistration}>Register</button>
+          {
+            toggleLogin ?
+            <>
+              <LoginPage setUserObj={setUserObj} />
+              <p>Need to register?</p>
+              <button onClick={hideRegistration}>Register</button>
+            </>
+            :
+            <>
+              <RegistrationPage />
+              <p>Already registered?</p>
+              <button onClick={hideRegistration}>Login</button>
+            </>
+          }
         </>
-        :
-        <>
-          <RegistrationPage />
-          <p>Already registered?</p>
-          <button onClick={hideRegistration}>Login</button>
-        </>
+        ) : ( 
+          <>
+            <div>{ JSON.stringify(userObj) }</div>
+          </>
+        )
       }
     </App>
   )

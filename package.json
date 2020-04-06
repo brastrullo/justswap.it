@@ -20,12 +20,14 @@
   },
   "homepage": "https://github.com/brastrullo/justswap.it#readme",
   "dependencies": {
+    "axios": "^0.19.2",
     "babel-plugin-styled-components": "^1.10.7",
     "next": "^9.3.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-google-login": "^5.1.2",
-    "styled-components": "^5.0.1"
+    "styled-components": "^5.0.1",
+    "swr": "^0.2.0"
   },
   "devDependencies": {
     "@types/node": "^13.9.8",

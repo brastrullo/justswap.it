@@ -34,8 +34,7 @@ function Input({
   error = '',
   autoComplete = '',
   max = '',
-  min = '',
-  pattern=''
+  min = ''
 }) {
   const inputSuccess = value.length > 0 && error.length === 0
 
@@ -51,7 +50,6 @@ function Input({
           onChange={onChange}
           min={min}
           max={max}
-          pattern={pattern}
           autoComplete={autoComplete}
           required={required}
         />
