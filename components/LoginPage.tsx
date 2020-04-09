@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
+import { loginUser } from '../utils/asyncActions'
 import mockData from '../mockData.json'
 import Input from './Input'
 import Button from './Button'
-import axios from 'axios'
+
 // import GoogleLogin from 'react-google-login';
 
 const LoginPage = ({
@@ -46,69 +47,9 @@ const LoginPage = ({
 
   const submitHandler = (e) => {
     e.preventDefault()
-    loginUser(loginObj)
+    loginUser(loginObj, setUserObj)
   }
 
-  const loginUser = (obj) => {
-    const dataTransformer = (data) => {
-      return ({
-        email: data.user,
-        password: data.pass
-      })
-    }
-
-    const transformedData = dataTransformer(obj)
-
-    const createToken = async () => {
-      return await axios.post('http://localhost:8000/api/auth/jwt/create', transformedData)
-      .then(function (response) {
-        return response.data
-      })
-      .catch(function (error) {
-        if (error.response) {
-          console.log('__Response__');
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          console.log('Req:', error.request);
-        } else {
-          console.log('Error: ', error.message);
-        }
-        console.log(error.config);
-      });
-    }
-
-    const getUserInfo = async (token) => {
-      return await axios.get('http://localhost:8000/api/auth/users/me', {
-        params: transformedData,
-        headers: {
-          Authorization: `Bearer ${token.access}`
-        }
-      })
-      .then(function (response) {
-        return response.data
-      })
-      .catch(function (error) {
-        if (error.response) {
-          console.log('__Response__');
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          console.log('Req:', error.request);
-        } else {
-          console.log('Error: ', error.message);
-        }
-        console.log(error.config);
-      });
-    }
-    createToken()
-    .then(token => getUserInfo(token))
-    .then(user => {
-      setUserObj(user)
-    })
-  }
 
   return (
     <>

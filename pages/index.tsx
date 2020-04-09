@@ -1,7 +1,9 @@
+import {connect} from "react-redux";
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import LoginPage from '../components/LoginPage'
 import RegistrationPage from '../components/RegistrationPage'
+import { logUsers, createUser } from '../reducers/usersSlice'
 
 const App = styled.main`
   font-size: ${({ theme }) => theme.fontSize.base};
@@ -21,7 +23,7 @@ const App = styled.main`
   }
   `
 
-function HomePage() {
+function HomePage(props) {
   const [userObj, setUserObj] = useState({})
   const [toggleLogin, setToggleLogin] = useState(false)
   const notLoggedIn = Object.keys(userObj).length === 0
@@ -37,11 +39,15 @@ function HomePage() {
   const hideRegistration = () => {
     setToggleLogin(!toggleLogin)
   }
+
+  console.log({ mockUsers: props.users.usersArray})
+  
   return (
     <App>
       {
         notLoggedIn ? (
         <>
+          <h1>Welcome to {props.custom.title}</h1>
           {
             toggleLogin ?
             <>
@@ -59,6 +65,7 @@ function HomePage() {
         </>
         ) : ( 
           <>
+            <p>Logged in</p>
             <div>{ JSON.stringify(userObj) }</div>
           </>
         )
@@ -67,4 +74,10 @@ function HomePage() {
   )
 }
 
-export default HomePage
+HomePage.getInitialProps = ({store, isServer, pathname, query}) => {
+  store.dispatch(logUsers())
+  store.dispatch(createUser('testuser1'))
+  return { custom: {title: 'JustSwap.it'} } // pass custom props with an {object} containing key [custom]
+}
+
+export default connect(state => state)(HomePage);
