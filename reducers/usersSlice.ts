@@ -1,8 +1,9 @@
 import {
-  // createAsyncThunk,
-  createSlice
+  createAsyncThunk,
+  createSlice,
+  createAction
 } from '@reduxjs/toolkit'
-// import axios from 'axios'
+import { getUserAccess, postNewUser } from '../utils/asyncActions'
 
 // TYPESCRIPT BUILDER API EXAMPLE
 // createReducer(0, builder =>
@@ -11,46 +12,70 @@ import {
 //   })
 // )
 
-// export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
-//   const response = await axios.get()
-//   return response.data
-// })
+export type UserObj = {
+  username: string,
+  email: string,
+  password: string
+}
+
+export type LoginObj = {
+  user: string,
+  pass: string
+}
+
+function withPayloadType<T>() {
+  return (t: T) => ({ payload: t })
+}
+
+const usersLoading = createAction('users/loading')
+const usersReceived = createAction<string, 'users/received'>('users/received')
+const logUsers = createAction('users/log')
+const setCurrentUser =  createAction('users/setUser', withPayloadType<LoginObj>())
+
+export const registerUser = createAsyncThunk('users/createUser', async (obj: UserObj, thunkAPI) => {
+  return await postNewUser(obj)
+})
+
+export const loginUser = createAsyncThunk('users/login', async (obj: LoginObj, thunkAPI) => {
+  return await getUserAccess(obj)
+})
 
 const usersSlice = createSlice({
   name: 'users',
   initialState: {
-    usersArray: [{
-      username: 'zxcv'
-    }]
+    loading: 'idle',
+    currentUser: {},
+    usersArray: []
   },
   reducers: {
-    logUsers(state) {
-      console.log('Log Users:', state)
+    [setCurrentUser.type]: (state, action) => {
+      state.currentUser = action.payload
+      console.log(state.currentUser)
       return state
     },
-    createUser(state, action) {
-      return {
-        ...state,
-        usersArray: [...state.usersArray, { username: action.payload }]
+    [usersLoading.type] : (state, action) => {
+      if (state.loading === 'idle') {
+        state.loading = 'pending'
       }
     },
-    updateUser(state, action) {
-      console.log({ state, action })
-      return state
+    [usersReceived.type] : (state, action) => {
+      if (state.loading === 'pending') {
+        state.loading = 'idle'
+        state.usersArray = action.payload
+      }
     },
-    deleteUser(state, action) {
-      console.log({ state, action })
+    [logUsers.type] : (state, action) => {
+      console.log('Log Users:', state.usersArray)
       return state
-    },
+    }
   },
-  extraReducers: {
-    // [fetchUsers.fulfilled]: (state, action) => {
-    //   // Add user to the state array
-    //   state.users.push(action.payload)
-    // }
+  extraReducers: builder => {
+    builder.addCase(loginUser.fulfilled, (state, action) => {
+      state.currentUser = action.payload
+      return state
+    })
   }
 })
 
 const { actions, reducer } = usersSlice
-export const { logUsers, createUser, updateUser, deleteUser } = actions
 export default reducer

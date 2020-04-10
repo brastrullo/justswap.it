@@ -1,9 +1,9 @@
-import {connect} from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { RootState } from '../reducers/rootReducer'
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import LoginPage from '../components/LoginPage'
 import RegistrationPage from '../components/RegistrationPage'
-import { logUsers, createUser } from '../reducers/usersSlice'
 
 const App = styled.main`
   font-size: ${({ theme }) => theme.fontSize.base};
@@ -24,23 +24,25 @@ const App = styled.main`
   `
 
 function HomePage(props) {
-  const [userObj, setUserObj] = useState({})
+  const dispatch = useDispatch()
+  const { currentUser } = useSelector(
+    (state: RootState) => state.users
+  )
+  
   const [toggleLogin, setToggleLogin] = useState(false)
-  const notLoggedIn = Object.keys(userObj).length === 0
+  const notLoggedIn = Object.keys(currentUser).length === 0
 
   useEffect(() => {
     if (notLoggedIn) {
       console.log('Please login.')
     } else {
-      console.log({userObj})
+      console.log({currentUser})
     }
-  }, [userObj])
+  }, [currentUser])
 
-  const hideRegistration = () => {
+  const registrationLoginToggle = () => {
     setToggleLogin(!toggleLogin)
   }
-
-  console.log({ mockUsers: props.users.usersArray})
   
   return (
     <App>
@@ -51,22 +53,22 @@ function HomePage(props) {
           {
             toggleLogin ?
             <>
-              <LoginPage setUserObj={setUserObj} />
+              <LoginPage />
               <p>Need to register?</p>
-              <button onClick={hideRegistration}>Register</button>
+              <button onClick={registrationLoginToggle}>Register</button>
             </>
             :
             <>
               <RegistrationPage />
               <p>Already registered?</p>
-              <button onClick={hideRegistration}>Login</button>
+              <button onClick={registrationLoginToggle}>Login</button>
             </>
           }
         </>
         ) : ( 
           <>
             <p>Logged in</p>
-            <div>{ JSON.stringify(userObj) }</div>
+            <div>{ JSON.stringify(currentUser) }</div>
           </>
         )
       }
@@ -74,10 +76,10 @@ function HomePage(props) {
   )
 }
 
+
 HomePage.getInitialProps = ({store, isServer, pathname, query}) => {
-  store.dispatch(logUsers())
-  store.dispatch(createUser('testuser1'))
-  return { custom: {title: 'JustSwap.it'} } // pass custom props with an {object} containing key [custom]
+  // pass custom props by returning an {object} containing key [custom]
+  return { custom: {title: 'JustSwap.it'} }
 }
 
 export default connect(state => state)(HomePage);

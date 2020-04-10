@@ -1,10 +1,12 @@
+import { useDispatch, useSelector, connect} from "react-redux";
 import { useState, useEffect } from 'react'
 import Input from './Input'
 import Button from './Button'
+import { RootState } from '../reducers/rootReducer'
+import { registerUser } from '../reducers/usersSlice'
 import mockData from '../mockData.json'
-import axios from 'axios'
 
-const RegistrationPage = () => {
+const RegistrationPage = (props) => {
   const registrationInit = {
     username: '',
     email: '',
@@ -18,6 +20,11 @@ const RegistrationPage = () => {
     password: '',
     confirmPassword: ''
   }
+
+  const dispatch = useDispatch()
+  const { loading, usersArray } = useSelector(
+    (state: RootState) => state.users
+  )
 
   const [registrationObj, setRegistrationObj] = useState(registrationInit)
   const [errorMsgObj, setErrorMsgsObj] = useState(errorMsg)
@@ -99,37 +106,9 @@ const RegistrationPage = () => {
     return foundUser.length === 0
   }
 
-  const createUser = (obj) => {
-    const dataTransformer = (data) => {
-      return ({
-        username: data.username,
-        email: data.email,
-        password: data.password
-      })
-    }
-    const transformedData = dataTransformer(obj)
-    axios.post('http://localhost:8000/api/auth/users/', transformedData)
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      if (error.response) {
-        console.log('__Response__');
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      } else if (error.request) {
-        console.log('Req:', error.request);
-      } else {
-        console.log('Error: ', error.message);
-      }
-      console.log(error.config);
-    });
-  }
-
   const submitHandler = (e) => {
     e.preventDefault()
-    createUser(registrationObj)
+    dispatch(registerUser(registrationObj))
   }
 
   return (
@@ -183,4 +162,4 @@ const RegistrationPage = () => {
   )
 }
 
-export default RegistrationPage
+export default connect(state => state)(RegistrationPage);

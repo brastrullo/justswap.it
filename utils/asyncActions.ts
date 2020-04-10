@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { catchError } from './utils'
 
-export const loginUser = (obj, setFn) => {
+export const getUserAccess = (obj) => {
   const dataTransformer = (data) => {
     return ({
       email: data.user,
@@ -31,9 +31,25 @@ export const loginUser = (obj, setFn) => {
     })
     .catch(catchError);
   }
-  createToken()
+  return createToken()
   .then(token => getUserInfo(token))
-  .then(user => {
-    setFn(user)
+  .then(user => user)
+}
+
+export const postNewUser = (obj) => {
+  console.log('Received', {obj})
+  const dataTransformer = (data) => {
+    return ({
+      username: data.username,
+      email: data.email,
+      password: data.password
+    })
+  }
+
+  const transformedData = dataTransformer(obj)
+  return axios.post('http://localhost:8000/api/auth/users/', transformedData)
+  .then(function (response) {
+    console.log(response);
   })
+  .catch(catchError);
 }

@@ -530,90 +530,174 @@ const rootReducer = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["combin
 /*!********************************!*\
   !*** ./reducers/usersSlice.ts ***!
   \********************************/
-/*! exports provided: logUsers, createUser, updateUser, deleteUser, default */
+/*! exports provided: registerUser, loginUser, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "logUsers", function() { return logUsers; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createUser", function() { return createUser; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateUser", function() { return updateUser; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteUser", function() { return deleteUser; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "registerUser", function() { return registerUser; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loginUser", function() { return loginUser; });
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "@reduxjs/toolkit");
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__);
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+/* harmony import */ var _utils_asyncActions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/asyncActions */ "./utils/asyncActions.ts");
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
- // import axios from 'axios'
-// TYPESCRIPT BUILDER API EXAMPLE
+ // TYPESCRIPT BUILDER API EXAMPLE
 // createReducer(0, builder =>
 //   builder.addCase(increment, (state, action) => {
 //     // action is inferred correctly here
 //   })
 // )
-// export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
-//   const response = await axios.get()
-//   return response.data
-// })
 
+function withPayloadType() {
+  return t => ({
+    payload: t
+  });
+}
+
+const usersLoading = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createAction"])('users/loading');
+const usersReceived = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createAction"])('users/received');
+const logUsers = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createAction"])('users/log');
+const setCurrentUser = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createAction"])('users/setUser', withPayloadType());
+const registerUser = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createAsyncThunk"])('users/createUser', async (obj, thunkAPI) => {
+  return await Object(_utils_asyncActions__WEBPACK_IMPORTED_MODULE_1__["postNewUser"])(obj);
+});
+const loginUser = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createAsyncThunk"])('users/login', async (obj, thunkAPI) => {
+  return await Object(_utils_asyncActions__WEBPACK_IMPORTED_MODULE_1__["getUserAccess"])(obj);
+});
 const usersSlice = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createSlice"])({
   name: 'users',
   initialState: {
-    usersArray: [{
-      username: 'zxcv'
-    }]
+    loading: 'idle',
+    currentUser: {},
+    usersArray: []
   },
   reducers: {
-    logUsers(state) {
-      console.log('Log Users:', state);
+    [setCurrentUser.type]: (state, action) => {
+      state.currentUser = action.payload;
+      console.log(state.currentUser);
       return state;
     },
-
-    createUser(state, action) {
-      return _objectSpread({}, state, {
-        usersArray: [...state.usersArray, {
-          username: action.payload
-        }]
-      });
+    [usersLoading.type]: (state, action) => {
+      if (state.loading === 'idle') {
+        state.loading = 'pending';
+      }
     },
-
-    updateUser(state, action) {
-      console.log({
-        state,
-        action
-      });
-      return state;
+    [usersReceived.type]: (state, action) => {
+      if (state.loading === 'pending') {
+        state.loading = 'idle';
+        state.usersArray = action.payload;
+      }
     },
-
-    deleteUser(state, action) {
-      console.log({
-        state,
-        action
-      });
+    [logUsers.type]: (state, action) => {
+      console.log('Log Users:', state.usersArray);
       return state;
     }
-
   },
-  extraReducers: {// [fetchUsers.fulfilled]: (state, action) => {
-    //   // Add user to the state array
-    //   state.users.push(action.payload)
-    // }
+  extraReducers: builder => {
+    builder.addCase(loginUser.fulfilled, (state, action) => {
+      state.currentUser = action.payload;
+      return state;
+    });
   }
 });
 const {
   actions,
   reducer
 } = usersSlice;
-const {
-  logUsers,
-  createUser,
-  updateUser,
-  deleteUser
-} = actions;
 /* harmony default export */ __webpack_exports__["default"] = (reducer);
+
+/***/ }),
+
+/***/ "./utils/asyncActions.ts":
+/*!*******************************!*\
+  !*** ./utils/asyncActions.ts ***!
+  \*******************************/
+/*! exports provided: getUserAccess, postNewUser */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getUserAccess", function() { return getUserAccess; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "postNewUser", function() { return postNewUser; });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "axios");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./utils/utils.ts");
+
+
+const getUserAccess = obj => {
+  const dataTransformer = data => {
+    return {
+      email: data.user,
+      password: data.pass
+    };
+  };
+
+  const transformedData = dataTransformer(obj);
+
+  const createToken = async () => {
+    return await axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('http://localhost:8000/api/auth/jwt/create', transformedData).then(function (response) {
+      return response.data;
+    }).catch(_utils__WEBPACK_IMPORTED_MODULE_1__["catchError"]);
+  };
+
+  const getUserInfo = async token => {
+    return await axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('http://localhost:8000/api/auth/users/me', {
+      params: transformedData,
+      headers: {
+        Authorization: `Bearer ${token.access}`
+      }
+    }).then(function (response) {
+      return response.data;
+    }).catch(_utils__WEBPACK_IMPORTED_MODULE_1__["catchError"]);
+  };
+
+  return createToken().then(token => getUserInfo(token)).then(user => user);
+};
+const postNewUser = obj => {
+  console.log('Received', {
+    obj
+  });
+
+  const dataTransformer = data => {
+    return {
+      username: data.username,
+      email: data.email,
+      password: data.password
+    };
+  };
+
+  const transformedData = dataTransformer(obj);
+  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('http://localhost:8000/api/auth/users/', transformedData).then(function (response) {
+    console.log(response);
+  }).catch(_utils__WEBPACK_IMPORTED_MODULE_1__["catchError"]);
+};
+
+/***/ }),
+
+/***/ "./utils/utils.ts":
+/*!************************!*\
+  !*** ./utils/utils.ts ***!
+  \************************/
+/*! exports provided: catchError */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "catchError", function() { return catchError; });
+const catchError = error => {
+  if (error.response) {
+    console.log('__Response__');
+    console.log(error.response.data);
+    console.log(error.response.status);
+    console.log(error.response.headers);
+  } else if (error.request) {
+    console.log('Req:', error.request);
+  } else {
+    console.log('Error: ', error.message);
+  }
+
+  console.log(error.config);
+};
 
 /***/ }),
 
@@ -637,6 +721,17 @@ module.exports = __webpack_require__(/*! private-next-pages/_app.js */"./pages/_
 /***/ (function(module, exports) {
 
 module.exports = require("@reduxjs/toolkit");
+
+/***/ }),
+
+/***/ "axios":
+/*!************************!*\
+  !*** external "axios" ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("axios");
 
 /***/ }),
 

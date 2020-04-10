@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -228,11 +228,13 @@ function Input({
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _utils_asyncActions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/asyncActions */ "./utils/asyncActions.ts");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "react-redux");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _mockData_json__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../mockData.json */ "./mockData.json");
 var _mockData_json__WEBPACK_IMPORTED_MODULE_2___namespace = /*#__PURE__*/__webpack_require__.t(/*! ../mockData.json */ "./mockData.json", 1);
 /* harmony import */ var _Input__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Input */ "./components/Input.tsx");
 /* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Button */ "./components/Button.tsx");
+/* harmony import */ var _reducers_usersSlice__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../reducers/usersSlice */ "./reducers/usersSlice.ts");
 var _jsxFileName = "/Users/bradras/Projects/justswap.it/components/LoginPage.tsx";
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
@@ -247,15 +249,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
  // import GoogleLogin from 'react-google-login';
 
-const LoginPage = ({
-  setUserObj
-}) => {
+const LoginPage = () => {
   const loginInit = {
     user: '',
     pass: ''
   };
+  const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useDispatch"])();
+  const {
+    loading,
+    usersArray
+  } = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useSelector"])(state => state.users);
   const {
     0: loginObj,
     1: setLoginObj
@@ -295,21 +301,21 @@ const LoginPage = ({
 
   const submitHandler = e => {
     e.preventDefault();
-    Object(_utils_asyncActions__WEBPACK_IMPORTED_MODULE_1__["loginUser"])(loginObj, setUserObj);
+    dispatch(Object(_reducers_usersSlice__WEBPACK_IMPORTED_MODULE_5__["loginUser"])(loginObj));
   };
 
   return __jsx(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, __jsx("form", {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 56,
+      lineNumber: 61,
       columnNumber: 5
     }
   }, __jsx("legend", {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 57,
+      lineNumber: 62,
       columnNumber: 7
     }
   }, "Login JustSwap.it"), __jsx(_Input__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -322,7 +328,7 @@ const LoginPage = ({
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 58,
+      lineNumber: 63,
       columnNumber: 7
     }
   }), __jsx(_Input__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -335,7 +341,7 @@ const LoginPage = ({
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 66,
+      lineNumber: 71,
       columnNumber: 7
     }
   }), __jsx(_Button__WEBPACK_IMPORTED_MODULE_4__["default"], {
@@ -345,13 +351,13 @@ const LoginPage = ({
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 74,
+      lineNumber: 79,
       columnNumber: 7
     }
   })));
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (LoginPage);
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(state => state)(LoginPage));
 
 /***/ }),
 
@@ -366,12 +372,13 @@ const LoginPage = ({
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Input__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Input */ "./components/Input.tsx");
-/* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Button */ "./components/Button.tsx");
-/* harmony import */ var _mockData_json__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../mockData.json */ "./mockData.json");
-var _mockData_json__WEBPACK_IMPORTED_MODULE_3___namespace = /*#__PURE__*/__webpack_require__.t(/*! ../mockData.json */ "./mockData.json", 1);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "axios");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "react-redux");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _Input__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Input */ "./components/Input.tsx");
+/* harmony import */ var _Button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Button */ "./components/Button.tsx");
+/* harmony import */ var _reducers_usersSlice__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../reducers/usersSlice */ "./reducers/usersSlice.ts");
+/* harmony import */ var _mockData_json__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../mockData.json */ "./mockData.json");
+var _mockData_json__WEBPACK_IMPORTED_MODULE_5___namespace = /*#__PURE__*/__webpack_require__.t(/*! ../mockData.json */ "./mockData.json", 1);
 var _jsxFileName = "/Users/bradras/Projects/justswap.it/components/RegistrationPage.tsx";
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
@@ -388,7 +395,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-const RegistrationPage = () => {
+
+const RegistrationPage = props => {
   const registrationInit = {
     username: '',
     email: '',
@@ -401,6 +409,11 @@ const RegistrationPage = () => {
     password: '',
     confirmPassword: ''
   };
+  const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useDispatch"])();
+  const {
+    loading,
+    usersArray
+  } = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useSelector"])(state => state.users);
   const {
     0: registrationObj,
     1: setRegistrationObj
@@ -479,65 +492,37 @@ const RegistrationPage = () => {
   };
 
   const isNameAvailable = username => {
-    const getData = _mockData_json__WEBPACK_IMPORTED_MODULE_3__;
+    const getData = _mockData_json__WEBPACK_IMPORTED_MODULE_5__;
     const foundUser = getData.users.filter(user => user.username === username);
     return foundUser.length === 0;
   };
 
   const isEmailAvailable = email => {
-    const getData = _mockData_json__WEBPACK_IMPORTED_MODULE_3__;
+    const getData = _mockData_json__WEBPACK_IMPORTED_MODULE_5__;
     const foundUser = getData.users.filter(user => user.email === email);
     return foundUser.length === 0;
   };
 
-  const createUser = obj => {
-    const dataTransformer = data => {
-      return {
-        username: data.username,
-        email: data.email,
-        password: data.password
-      };
-    };
-
-    const transformedData = dataTransformer(obj);
-    axios__WEBPACK_IMPORTED_MODULE_4___default.a.post('http://localhost:8000/api/auth/users/', transformedData).then(function (response) {
-      console.log(response);
-    }).catch(function (error) {
-      if (error.response) {
-        console.log('__Response__');
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      } else if (error.request) {
-        console.log('Req:', error.request);
-      } else {
-        console.log('Error: ', error.message);
-      }
-
-      console.log(error.config);
-    });
-  };
-
   const submitHandler = e => {
     e.preventDefault();
-    createUser(registrationObj);
+    dispatch(Object(_reducers_usersSlice__WEBPACK_IMPORTED_MODULE_4__["registerUser"])(registrationObj));
   };
 
   return __jsx(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, __jsx("form", {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 137,
+      lineNumber: 116,
       columnNumber: 5
     }
   }, __jsx("legend", {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 138,
+      lineNumber: 117,
       columnNumber: 7
     }
-  }, "Register Account"), __jsx(_Input__WEBPACK_IMPORTED_MODULE_1__["default"], {
+  }, "Register Account"), __jsx(_Input__WEBPACK_IMPORTED_MODULE_2__["default"], {
     id: "username",
     label: "Username",
     min: "4",
@@ -548,10 +533,10 @@ const RegistrationPage = () => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 139,
+      lineNumber: 118,
       columnNumber: 7
     }
-  }), __jsx(_Input__WEBPACK_IMPORTED_MODULE_1__["default"], {
+  }), __jsx(_Input__WEBPACK_IMPORTED_MODULE_2__["default"], {
     id: "email",
     label: "Email",
     value: registrationObj.email,
@@ -560,10 +545,10 @@ const RegistrationPage = () => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 148,
+      lineNumber: 127,
       columnNumber: 7
     }
-  }), __jsx(_Input__WEBPACK_IMPORTED_MODULE_1__["default"], {
+  }), __jsx(_Input__WEBPACK_IMPORTED_MODULE_2__["default"], {
     id: "password",
     label: "Password",
     type: "password",
@@ -575,10 +560,10 @@ const RegistrationPage = () => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 155,
+      lineNumber: 134,
       columnNumber: 7
     }
-  }), __jsx(_Input__WEBPACK_IMPORTED_MODULE_1__["default"], {
+  }), __jsx(_Input__WEBPACK_IMPORTED_MODULE_2__["default"], {
     id: "confirmPassword",
     label: "Confirm Password",
     type: "password",
@@ -591,23 +576,23 @@ const RegistrationPage = () => {
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 165,
+      lineNumber: 144,
       columnNumber: 7
     }
-  }), __jsx(_Button__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  }), __jsx(_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
     onClick: submitHandler,
     disabled: !submitReady,
     text: "Submit",
     __self: undefined,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 176,
+      lineNumber: 155,
       columnNumber: 7
     }
   })));
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (RegistrationPage);
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(state => state)(RegistrationPage));
 
 /***/ }),
 
@@ -639,11 +624,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(styled_components__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _components_LoginPage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/LoginPage */ "./components/LoginPage.tsx");
 /* harmony import */ var _components_RegistrationPage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/RegistrationPage */ "./components/RegistrationPage.tsx");
-/* harmony import */ var _reducers_usersSlice__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../reducers/usersSlice */ "./reducers/usersSlice.ts");
 var _jsxFileName = "/Users/bradras/Projects/justswap.it/pages/index.tsx";
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
-
 
 
 
@@ -657,106 +640,102 @@ const App = styled_components__WEBPACK_IMPORTED_MODULE_2___default.a.main.withCo
 }) => theme.fontSize.base);
 
 function HomePage(props) {
+  const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useDispatch"])();
   const {
-    0: userObj,
-    1: setUserObj
-  } = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({});
+    currentUser
+  } = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useSelector"])(state => state.users);
   const {
     0: toggleLogin,
     1: setToggleLogin
   } = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false);
-  const notLoggedIn = Object.keys(userObj).length === 0;
+  const notLoggedIn = Object.keys(currentUser).length === 0;
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
     if (notLoggedIn) {
       console.log('Please login.');
     } else {
       console.log({
-        userObj
+        currentUser
       });
     }
-  }, [userObj]);
+  }, [currentUser]);
 
-  const hideRegistration = () => {
+  const registrationLoginToggle = () => {
     setToggleLogin(!toggleLogin);
   };
 
-  console.log({
-    mockUsers: props.users.usersArray
-  });
   return __jsx(App, {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 46,
+      lineNumber: 48,
       columnNumber: 5
     }
   }, notLoggedIn ? __jsx(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, __jsx("h1", {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 50,
+      lineNumber: 52,
       columnNumber: 11
     }
   }, "Welcome to ", props.custom.title), toggleLogin ? __jsx(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, __jsx(_components_LoginPage__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    setUserObj: setUserObj,
-    __self: this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 54,
-      columnNumber: 15
-    }
-  }), __jsx("p", {
-    __self: this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 55,
-      columnNumber: 15
-    }
-  }, "Need to register?"), __jsx("button", {
-    onClick: hideRegistration,
     __self: this,
     __source: {
       fileName: _jsxFileName,
       lineNumber: 56,
       columnNumber: 15
     }
-  }, "Register")) : __jsx(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, __jsx(_components_RegistrationPage__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    __self: this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 60,
-      columnNumber: 15
-    }
   }), __jsx("p", {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 61,
+      lineNumber: 57,
       columnNumber: 15
     }
-  }, "Already registered?"), __jsx("button", {
-    onClick: hideRegistration,
+  }, "Need to register?"), __jsx("button", {
+    onClick: registrationLoginToggle,
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 58,
+      columnNumber: 15
+    }
+  }, "Register")) : __jsx(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, __jsx(_components_RegistrationPage__WEBPACK_IMPORTED_MODULE_4__["default"], {
     __self: this,
     __source: {
       fileName: _jsxFileName,
       lineNumber: 62,
       columnNumber: 15
     }
+  }), __jsx("p", {
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 63,
+      columnNumber: 15
+    }
+  }, "Already registered?"), __jsx("button", {
+    onClick: registrationLoginToggle,
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 64,
+      columnNumber: 15
+    }
   }, "Login"))) : __jsx(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, __jsx("p", {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 68,
+      lineNumber: 70,
       columnNumber: 13
     }
   }, "Logged in"), __jsx("div", {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 69,
+      lineNumber: 71,
       columnNumber: 13
     }
-  }, JSON.stringify(userObj))));
+  }, JSON.stringify(currentUser))));
 }
 
 HomePage.getInitialProps = ({
@@ -765,13 +744,12 @@ HomePage.getInitialProps = ({
   pathname,
   query
 }) => {
-  store.dispatch(Object(_reducers_usersSlice__WEBPACK_IMPORTED_MODULE_5__["logUsers"])());
-  store.dispatch(Object(_reducers_usersSlice__WEBPACK_IMPORTED_MODULE_5__["createUser"])('testuser1'));
+  // pass custom props by returning an {object} containing key [custom]
   return {
     custom: {
       title: 'JustSwap.it'
     }
-  }; // pass custom props with an {object} containing key [custom]
+  };
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(state => state)(HomePage));
@@ -782,89 +760,80 @@ HomePage.getInitialProps = ({
 /*!********************************!*\
   !*** ./reducers/usersSlice.ts ***!
   \********************************/
-/*! exports provided: logUsers, createUser, updateUser, deleteUser, default */
+/*! exports provided: registerUser, loginUser, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "logUsers", function() { return logUsers; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createUser", function() { return createUser; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateUser", function() { return updateUser; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteUser", function() { return deleteUser; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "registerUser", function() { return registerUser; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loginUser", function() { return loginUser; });
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "@reduxjs/toolkit");
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__);
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+/* harmony import */ var _utils_asyncActions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/asyncActions */ "./utils/asyncActions.ts");
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
- // import axios from 'axios'
-// TYPESCRIPT BUILDER API EXAMPLE
+ // TYPESCRIPT BUILDER API EXAMPLE
 // createReducer(0, builder =>
 //   builder.addCase(increment, (state, action) => {
 //     // action is inferred correctly here
 //   })
 // )
-// export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
-//   const response = await axios.get()
-//   return response.data
-// })
 
+function withPayloadType() {
+  return t => ({
+    payload: t
+  });
+}
+
+const usersLoading = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createAction"])('users/loading');
+const usersReceived = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createAction"])('users/received');
+const logUsers = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createAction"])('users/log');
+const setCurrentUser = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createAction"])('users/setUser', withPayloadType());
+const registerUser = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createAsyncThunk"])('users/createUser', async (obj, thunkAPI) => {
+  return await Object(_utils_asyncActions__WEBPACK_IMPORTED_MODULE_1__["postNewUser"])(obj);
+});
+const loginUser = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createAsyncThunk"])('users/login', async (obj, thunkAPI) => {
+  return await Object(_utils_asyncActions__WEBPACK_IMPORTED_MODULE_1__["getUserAccess"])(obj);
+});
 const usersSlice = Object(_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__["createSlice"])({
   name: 'users',
   initialState: {
-    usersArray: [{
-      username: 'zxcv'
-    }]
+    loading: 'idle',
+    currentUser: {},
+    usersArray: []
   },
   reducers: {
-    logUsers(state) {
-      console.log('Log Users:', state);
+    [setCurrentUser.type]: (state, action) => {
+      state.currentUser = action.payload;
+      console.log(state.currentUser);
       return state;
     },
-
-    createUser(state, action) {
-      return _objectSpread({}, state, {
-        usersArray: [...state.usersArray, {
-          username: action.payload
-        }]
-      });
+    [usersLoading.type]: (state, action) => {
+      if (state.loading === 'idle') {
+        state.loading = 'pending';
+      }
     },
-
-    updateUser(state, action) {
-      console.log({
-        state,
-        action
-      });
-      return state;
+    [usersReceived.type]: (state, action) => {
+      if (state.loading === 'pending') {
+        state.loading = 'idle';
+        state.usersArray = action.payload;
+      }
     },
-
-    deleteUser(state, action) {
-      console.log({
-        state,
-        action
-      });
+    [logUsers.type]: (state, action) => {
+      console.log('Log Users:', state.usersArray);
       return state;
     }
-
   },
-  extraReducers: {// [fetchUsers.fulfilled]: (state, action) => {
-    //   // Add user to the state array
-    //   state.users.push(action.payload)
-    // }
+  extraReducers: builder => {
+    builder.addCase(loginUser.fulfilled, (state, action) => {
+      state.currentUser = action.payload;
+      return state;
+    });
   }
 });
 const {
   actions,
   reducer
 } = usersSlice;
-const {
-  logUsers,
-  createUser,
-  updateUser,
-  deleteUser
-} = actions;
 /* harmony default export */ __webpack_exports__["default"] = (reducer);
 
 /***/ }),
@@ -873,18 +842,19 @@ const {
 /*!*******************************!*\
   !*** ./utils/asyncActions.ts ***!
   \*******************************/
-/*! exports provided: loginUser */
+/*! exports provided: getUserAccess, postNewUser */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loginUser", function() { return loginUser; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getUserAccess", function() { return getUserAccess; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "postNewUser", function() { return postNewUser; });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "axios");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./utils/utils.ts");
 
 
-const loginUser = (obj, setFn) => {
+const getUserAccess = obj => {
   const dataTransformer = data => {
     return {
       email: data.user,
@@ -911,9 +881,25 @@ const loginUser = (obj, setFn) => {
     }).catch(_utils__WEBPACK_IMPORTED_MODULE_1__["catchError"]);
   };
 
-  createToken().then(token => getUserInfo(token)).then(user => {
-    setFn(user);
+  return createToken().then(token => getUserInfo(token)).then(user => user);
+};
+const postNewUser = obj => {
+  console.log('Received', {
+    obj
   });
+
+  const dataTransformer = data => {
+    return {
+      username: data.username,
+      email: data.email,
+      password: data.password
+    };
+  };
+
+  const transformedData = dataTransformer(obj);
+  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('http://localhost:8000/api/auth/users/', transformedData).then(function (response) {
+    console.log(response);
+  }).catch(_utils__WEBPACK_IMPORTED_MODULE_1__["catchError"]);
 };
 
 /***/ }),
@@ -945,7 +931,7 @@ const catchError = error => {
 
 /***/ }),
 
-/***/ 4:
+/***/ 3:
 /*!*******************************!*\
   !*** multi ./pages/index.tsx ***!
   \*******************************/

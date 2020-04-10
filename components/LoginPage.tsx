@@ -1,18 +1,24 @@
+import { useDispatch, useSelector, connect} from 'react-redux'
 import { useState, useEffect } from 'react'
-import { loginUser } from '../utils/asyncActions'
+import { RootState } from '../reducers/rootReducer'
 import mockData from '../mockData.json'
 import Input from './Input'
 import Button from './Button'
+import { loginUser } from '../reducers/usersSlice'
 
 // import GoogleLogin from 'react-google-login';
 
-const LoginPage = ({
-  setUserObj
-}) => {
+const LoginPage = () => {
   const loginInit = {
     user: '',
     pass: ''
   }
+
+  const dispatch = useDispatch()
+  const { loading, usersArray } = useSelector(
+    (state: RootState) => state.users
+  )
+
   const [loginObj, setLoginObj] = useState(loginInit)
   const [loginReady, setLoginReady] = useState(false)
 
@@ -47,9 +53,8 @@ const LoginPage = ({
 
   const submitHandler = (e) => {
     e.preventDefault()
-    loginUser(loginObj, setUserObj)
+    dispatch(loginUser(loginObj))
   }
-
 
   return (
     <>
@@ -84,4 +89,4 @@ const LoginPage = ({
   )
 }
 
-export default LoginPage
+export default connect(state => state)(LoginPage);
